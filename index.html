@@ -1,0 +1,1816 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 爬虫索引标签 -->
+    <meta name="robots" content="index,follow">
+    <meta name="bingbot" content="index,follow">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <script type="text/javascript" src="https://io.1130.hk/888.js"></script>
+    <!-- 核心Meta SEO优化 -->
+    <title>实用网址导航</title>
+    <meta name="description" content="蓝光电影网官网入口为您提供海量高清蓝光影视资源在线观看服务。平台汇聚最新院线大片、经典老片、口碑热剧，支持4K画质极速播放，全天候智能更新推荐。即刻访问蓝光电影网，开启极致家庭影院体验，畅享视觉与心灵的震撼盛宴。">
+    <meta name="keywords" content="蓝光电影网官网入口,蓝光电影,高清影视,4K蓝光,在线观看,蓝光电影网,影视资源">
+    <style>
+        /* ============ 全站CSS变量 / Reset ============ */
+        :root {
+            --primary: #00b4d8;
+            --primary-dark: #0077b6;
+            --accent: #ff9f1c;
+            --bg-deep: #0b1d3a;
+            --bg-mid: #132744;
+            --bg-card: rgba(255, 255, 255, 0.06);
+            --text-main: #e8edf2;
+            --text-sub: #8a9bb5;
+            --border-light: rgba(255, 255, 255, 0.12);
+            --radius-lg: 24px;
+            --radius-pill: 70px;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+            --max-w: 1200px;
+            --gap: 24px;
+            --nav-h: 70px;
+        }
+        /* Reset */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            font-size: 17px;
+            line-height: 1.9;
+            color: var(--text-main);
+            background: radial-gradient(circle at 30% 20%, #142a4a 0%, var(--bg-deep) 60%, #08131f 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            opacity: 1;
+            animation: pageFadeIn 0.8s ease-out;
+        }
+        @keyframes pageFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        ul {
+            list-style: none;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+        /* 滚动进度条 */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            z-index: 10000;
+            border-radius: 0 4px 4px 0;
+            transition: width 0.05s linear;
+        }
+        /* 粒子背景Canvas */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        /* 主容器层级 */
+        .site-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        /* ============ 导航栏 ============ */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--nav-h);
+            background: rgba(7, 18, 35, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-light);
+            z-index: 9999;
+            transition: box-shadow 0.3s;
+        }
+        .navbar:hover {
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+        }
+        .navbar .nav-inner {
+            max-width: var(--max-w);
+            height: 100%;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            height: 42px;
+            flex-shrink: 0;
+        }
+        .logo svg {
+            width: 42px;
+            height: 42px;
+            display: block;
+        }
+        .logo-text {
+            margin-left: 12px;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, var(--text-main), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            white-space: nowrap;
+        }
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: clamp(16px, 3vw, 36px);
+        }
+        .nav-menu a {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-sub);
+            padding: 6px 4px;
+            position: relative;
+            transition: color 0.3s;
+        }
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: var(--text-main);
+        }
+        .nav-menu a:hover::after,
+        .nav-menu a.active::after {
+            width: 100%;
+        }
+        /* 移动端菜单按钮 */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            width: 40px;
+            height: 36px;
+            cursor: pointer;
+            color: var(--text-main);
+            font-size: 18px;
+            align-items: center;
+            justify-content: center;
+        }
+        /* ============ 首屏Banner ============ */
+        .banner {
+            min-height: 65vh;
+            min-height: 600px;
+            background: radial-gradient(circle at 20% 20%, rgba(0, 180, 216, 0.16) 0%, transparent 40%),
+                radial-gradient(circle at 70% 30%, rgba(255, 159, 28, 0.08) 0%, transparent 35%),
+                linear-gradient(135deg, var(--bg-deep) 0%, #152a4a 50%, var(--bg-mid) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: calc(var(--nav-h) + 30px) 20px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .banner::before,
+        .banner::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            animation: glowPulse 8s ease-in-out infinite alternate;
+        }
+        .banner::before {
+            width: 300px;
+            height: 300px;
+            background: rgba(0, 180, 216, 0.2);
+            top: 10%;
+            left: 15%;
+        }
+        .banner::after {
+            width: 250px;
+            height: 250px;
+            background: rgba(255, 159, 28, 0.15);
+            bottom: 10%;
+            right: 20%;
+            animation-delay: 2s;
+        }
+        @keyframes glowPulse {
+            from {
+                transform: scale(1) translateY(0);
+                opacity: 0.6;
+            }
+            to {
+                transform: scale(1.2) translateY(-20px);
+                opacity: 1;
+            }
+        }
+        .banner-content {
+            position: relative;
+            z-index: 2;
+            max-width: var(--max-w);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .banner-left {
+            flex: 1 1 420px;
+            max-width: 580px;
+        }
+        .banner-tag {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            border-radius: 999px;
+            padding: 6px 16px;
+            font-size: 13px;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 22px;
+        }
+        .banner-tag .arrow {
+            margin-right: 6px;
+            font-size: 12px;
+            color: var(--primary);
+        }
+        .banner-left h1 {
+            font-size: clamp(32px, 4.2vw, 52px);
+            font-weight: 800;
+            line-height: 1.2;
+            color: #fff;
+            letter-spacing: 1px;
+            margin-bottom: 18px;
+            background: linear-gradient(120deg, #fff 30%, #b2ebf2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .banner-desc {
+            color: #c0ccd9;
+            font-size: 16px;
+            line-height: 1.9;
+            margin-bottom: 26px;
+            max-width: 520px;
+        }
+        .banner-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+        .banner-tags span {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 999px;
+            padding: 5px 14px;
+            font-size: 13px;
+            color: #d8e0ea;
+            backdrop-filter: blur(4px);
+            transition: all 0.3s;
+        }
+        .banner-tags span:hover {
+            background: rgba(0, 180, 216, 0.25);
+            border-color: var(--primary);
+            color: #fff;
+        }
+        .banner-btns {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: 12px 28px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 180, 216, 0.3);
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(0, 180, 216, 0.45);
+        }
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+            border: 1px solid var(--border-light);
+            border-radius: 999px;
+            padding: 12px 28px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(4px);
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        /* 右栏：电脑显示器 */
+        .banner-right {
+            flex: 1 1 420px;
+            max-width: 520px;
+            display: flex;
+            justify-content: center;
+        }
+        .monitor {
+            width: 100%;
+            max-width: 480px;
+            background: rgba(10, 20, 40, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s;
+        }
+        .monitor:hover {
+            transform: translateY(-4px);
+        }
+        .monitor-top {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .monitor-dots {
+            display: flex;
+            gap: 6px;
+        }
+        .monitor-dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: block;
+        }
+        .monitor-dots span:nth-child(1) {
+            background: #ff5f57;
+        }
+        .monitor-dots span:nth-child(2) {
+            background: #febc2e;
+        }
+        .monitor-dots span:nth-child(3) {
+            background: #28c840;
+        }
+        .monitor-title {
+            margin-left: 16px;
+            font-size: 12px;
+            color: #7a8ba0;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 4px 16px;
+            border-radius: 6px;
+        }
+        .monitor-body {
+            display: flex;
+            gap: 20px;
+            padding: 24px 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .monitor-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            min-width: 90px;
+        }
+        .monitor-left svg {
+            width: 56px;
+            height: 56px;
+        }
+        .monitor-left span {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .monitor-center {
+            flex: 1.4;
+            display: flex;
+            justify-content: center;
+            min-width: 120px;
+        }
+        .monitor-right {
+            flex: 1;
+            min-width: 110px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .monitor-right .param {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            padding: 5px 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 8px;
+        }
+        .monitor-right .param span:first-child {
+            color: #7a8ba0;
+        }
+        .monitor-right .param span:last-child {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        /* ============ 通用模块标题 ============ */
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .section-title h2 {
+            font-size: clamp(28px, 3vw, 38px);
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: 14px;
+        }
+        .section-title h2 .highlight {
+            color: var(--primary);
+        }
+        .section-title p {
+            color: var(--text-sub);
+            font-size: 16px;
+            max-width: 560px;
+            margin: 0 auto;
+        }
+        .section-title .divider {
+            width: 60px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 4px;
+            margin: 18px auto 0;
+        }
+        /* ============ 核心优势 ============ */
+        .advantage-section {
+            padding: 90px 20px;
+            position: relative;
+            background: linear-gradient(180deg, rgba(11, 29, 58, 0.9) 0%, rgba(13, 33, 61, 0.95) 100%);
+        }
+        .adv-grid {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        .adv-card {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-pill);
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .adv-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(0, 180, 216, 0.4);
+        }
+        .adv-icon {
+            width: 68px;
+            height: 68px;
+            margin: 0 auto 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(0, 180, 216, 0.2), rgba(255, 159, 28, 0.12));
+            border-radius: 22px;
+        }
+        .adv-icon svg {
+            width: 36px;
+            height: 36px;
+            stroke: var(--primary);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .adv-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+        .adv-card p {
+            font-size: 15px;
+            color: var(--text-sub);
+            line-height: 1.7;
+        }
+        /* ============ 精选视频 ============ */
+        .video-section {
+            padding: 90px 20px;
+            background: #0d1f35;
+        }
+        .video-grid {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+        .video-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all 0.35s;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .video-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.4);
+            border-color: rgba(0, 180, 216, 0.3);
+        }
+        .video-thumbnail {
+            position: relative;
+            height: 190px;
+            background: linear-gradient(135deg, #0f2a4a, #1a3a5c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .video-tag {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+            padding: 5px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            color: #fff;
+            z-index: 2;
+        }
+        .video-tag i {
+            font-size: 10px;
+            color: var(--primary);
+        }
+        .play-btn {
+            width: 56px;
+            height: 56px;
+            background: rgba(0, 180, 216, 0.85);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(0, 180, 216, 0.5);
+            transition: transform 0.3s;
+            z-index: 2;
+        }
+        .play-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: #fff;
+            margin-left: 3px;
+        }
+        .video-card:hover .play-btn {
+            transform: scale(1.1);
+        }
+        .video-duration {
+            position: absolute;
+            bottom: 12px;
+            right: 14px;
+            background: rgba(0, 0, 0, 0.65);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #fff;
+        }
+        .video-info {
+            padding: 20px;
+        }
+        .video-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 8px;
+        }
+        .video-desc {
+            font-size: 14px;
+            color: var(--text-sub);
+            line-height: 1.7;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 14px;
+            min-height: 48px;
+        }
+        .video-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: #7a8ba0;
+            margin-bottom: 12px;
+        }
+        .video-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .video-tags-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .tag-video {
+            background: var(--primary);
+            color: #fff;
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-weight: 500;
+        }
+        .tag {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-sub);
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 999px;
+        }
+        /* ============ 相关资讯 ============ */
+        .news-section {
+            padding: 90px 20px;
+            background: #0b1a2e;
+        }
+        .news-grid {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+            grid-auto-rows: 1fr;
+        }
+        .news-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: 26px 24px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.35s;
+            min-height: 260px;
+        }
+        .news-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.4);
+            border-color: rgba(0, 180, 216, 0.3);
+        }
+        .news-date {
+            font-size: 13px;
+            color: var(--primary);
+            margin-bottom: 14px;
+        }
+        .news-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 48px;
+            margin-bottom: 12px;
+        }
+        .news-excerpt {
+            font-size: 14px;
+            color: var(--text-sub);
+            line-height: 1.7;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex: 1;
+            margin-bottom: 16px;
+        }
+        .news-link {
+            margin-top: auto;
+            font-size: 14px;
+            color: #8a9bb5;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: color 0.3s;
+        }
+        .news-link:hover {
+            color: var(--primary);
+        }
+        /* ============ FAQ ============ */
+        .faq-section {
+            padding: 90px 20px;
+            background: #0d1f35;
+        }
+        .faq-list {
+            max-width: 860px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .faq-item {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            overflow: hidden;
+            transition: all 0.35s;
+        }
+        .faq-item:hover {
+            border-color: rgba(0, 180, 216, 0.25);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+        .faq-question {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 22px 28px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .faq-question i {
+            font-size: 18px;
+            color: var(--primary);
+            width: 24px;
+            text-align: center;
+        }
+        .faq-question h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--primary);
+            flex: 1;
+            line-height: 1.4;
+        }
+        .faq-toggle-icon {
+            font-size: 16px;
+            color: var(--text-sub);
+            transition: transform 0.3s;
+            flex-shrink: 0;
+        }
+        .faq-item.active .faq-toggle-icon {
+            transform: rotate(45deg);
+            color: var(--primary);
+        }
+        .faq-answer {
+            padding: 0 28px 26px;
+            color: var(--text-sub);
+            font-size: 15px;
+            line-height: 1.85;
+            display: none;
+        }
+        .faq-item.active .faq-answer {
+            display: block;
+            animation: fadeSlideDown 0.3s ease-out;
+        }
+        @keyframes fadeSlideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .faq-answer ul {
+            margin-top: 8px;
+            padding-inline-start: 20px;
+            list-style: disc;
+        }
+        .faq-answer li {
+            margin-bottom: 6px;
+            color: #b0b8c8;
+        }
+        /* ============ 评论留言 ============ */
+        .comment-section {
+            padding: 90px 20px;
+            background: #0b1a2e;
+        }
+        .comment-wrapper {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            gap: 40px;
+        }
+        .comment-form-wrap {
+            flex: 0 0 340px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .comment-form-wrap input,
+        .comment-form-wrap textarea {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 14px 18px;
+            font-size: 15px;
+            color: var(--text-main);
+            outline: none;
+            transition: border 0.3s;
+            font-family: inherit;
+            margin-bottom: 16px;
+        }
+        .comment-form-wrap input:focus,
+        .comment-form-wrap textarea:focus {
+            border-color: var(--primary);
+        }
+        .comment-form-wrap textarea {
+            min-height: 120px;
+            resize: vertical;
+            line-height: 1.7;
+        }
+        .comment-form-wrap .btn-submit {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: 12px 28px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(0, 180, 216, 0.25);
+        }
+        .comment-form-wrap .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(0, 180, 216, 0.4);
+        }
+        .comment-list-wrap {
+            flex: 1;
+            min-width: 0;
+        }
+        .comment-list {
+            max-height: 560px;
+            overflow-y: auto;
+            padding-right: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .comment-list::-webkit-scrollbar {
+            width: 5px;
+        }
+        .comment-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+        }
+        .comment-item {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 18px;
+            transition: background 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .comment-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .comment-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #fff;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .comment-user {
+            font-size: 14px;
+            font-weight: 600;
+            color: #d0d8e4;
+            flex: 1;
+        }
+        .comment-time {
+            font-size: 12px;
+            color: #5a6a7a;
+            flex-shrink: 0;
+        }
+        .comment-tag-row {
+            margin-bottom: 8px;
+        }
+        .comment-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(0, 180, 216, 0.1);
+            color: var(--primary);
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 999px;
+        }
+        .comment-text {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #aab4c2;
+            margin-bottom: 12px;
+        }
+        .comment-actions {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            font-size: 13px;
+            color: #6a7a8a;
+        }
+        .comment-actions span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .comment-actions span:hover {
+            color: var(--primary);
+        }
+        .comment-list-footer {
+            text-align: center;
+            padding: 20px 0 6px;
+            color: #5a6a7a;
+            font-size: 14px;
+        }
+        .comment-list-footer .arrow-down {
+            display: block;
+            margin-top: 4px;
+            font-size: 18px;
+            color: var(--primary);
+        }
+        /* ============ 页脚 ============ */
+        .footer {
+            text-align: center;
+            padding: 40px 20px 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(7, 15, 28, 0.8);
+            color: #5a6a7a;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .footer a {
+            color: var(--primary);
+        }
+        .footer .disclaimer {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #4a5a6a;
+        }
+        /* ============ 响应式 ============ */
+        @media (max-width: 1024px) {
+            .adv-grid,
+            .video-grid,
+            .news-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .comment-wrapper {
+                flex-direction: column;
+                padding: 24px;
+            }
+            .comment-form-wrap {
+                flex: 1;
+                width: 100%;
+            }
+        }
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: var(--nav-h);
+                left: 0;
+                width: 100%;
+                background: rgba(7, 18, 35, 0.96);
+                flex-direction: column;
+                padding: 20px;
+                gap: 16px;
+                border-bottom: 1px solid var(--border-light);
+            }
+            .nav-menu.open {
+                display: flex;
+            }
+            .menu-toggle {
+                display: flex;
+            }
+            .banner {
+                padding-top: calc(var(--nav-h) + 20px);
+                align-items: flex-start;
+            }
+            .banner-content {
+                flex-direction: column;
+            }
+            .banner-left,
+            .banner-right {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+            .monitor {
+                margin-top: 20px;
+            }
+            .adv-grid,
+            .video-grid,
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+            .adv-card {
+                border-radius: var(--radius-lg);
+            }
+            .comment-wrapper {
+                padding: 16px;
+            }
+        }
+        @media (max-width: 480px) {
+            body {
+                font-size: 16px;
+            }
+            .banner-tags span {
+                font-size: 12px;
+                padding: 4px 10px;
+            }
+            .btn-primary,
+            .btn-secondary {
+                padding: 10px 22px;
+                font-size: 14px;
+            }
+            .logo-text {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 滚动进度条 -->
+    <div id="scroll-progress"></div>
+    <!-- 粒子背景 -->
+    <canvas id="particle-canvas"></canvas>
+    <div class="site-wrapper">
+        <!-- ==================== 固定导航栏 ==================== -->
+        <header class="navbar" id="navbar">
+            <div class="nav-inner">
+                <div class="logo">
+                    <svg viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2.5" y="2.5" width="37" height="37" rx="9" stroke="var(--primary)" stroke-width="2.5"/>
+                        <rect x="11" y="11" width="20" height="20" rx="5" fill="var(--primary)" fill-opacity="0.3"/>
+                        <rect x="16" y="16" width="10" height="10" rx="3" fill="var(--primary)"/>
+                    </svg>
+                    <span class="logo-text">蓝光电影网</span>
+                </div>
+                <nav class="nav-menu" id="navMenu">
+                    <a href="#section-advantage" class="active">核心优势</a>
+                    <a href="#section-video">精选视频</a>
+                    <a href="#section-news">相关资讯</a>
+                    <a href="#section-faq">常见问题</a>
+                    <a href="#section-comment">评论留言</a>
+                </nav>
+                <button class="menu-toggle" id="menuToggle" aria-label="菜单">☰</button>
+            </div>
+        </header>
+        <!-- ==================== 首屏Banner ==================== -->
+        <section class="banner" id="banner">
+            <div class="banner-content">
+                <div class="banner-left">
+                    <span class="banner-tag"><span class="arrow">→</span> 蓝光电影网官网入口 </span>
+                    <h1>蓝光电影网<br>极致观影体验</h1>
+                    <p class="banner-desc">汇聚全网高清蓝光资源，4K画质一键播放。最新电影、经典剧集、热门综艺，尽在蓝光电影网。</p>
+                    <div class="banner-tags">
+                        <span>4K HDR</span>
+                        <span>杜比全景声</span>
+                        <span>蓝光原盘</span>
+                        <span>IMAX Enhanced</span>
+                    </div>
+                    <div class="banner-btns">
+                        <a href="#section-video" class="btn-primary">立即观影</a>
+                        <a href="#section-advantage" class="btn-secondary">了解更多</a>
+                    </div>
+                </div>
+                <div class="banner-right">
+                    <div class="monitor">
+                        <div class="monitor-top">
+                            <div class="monitor-dots">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <div class="monitor-title">蓝光电影网播放器</div>
+                        </div>
+                        <div class="monitor-body">
+                            <div class="monitor-left">
+                                <svg viewBox="0 0 56 56" fill="none">
+                                    <rect x="3" y="3" width="50" height="50" rx="14" stroke="var(--primary)" stroke-width="2.5"/>
+                                    <rect x="8" y="8" width="40" height="40" rx="10" fill="var(--primary)" fill-opacity="0.15"/>
+                                    <path d="M24 22L36 28L24 34V22Z" fill="var(--primary)"/>
+                                </svg>
+                                <span>蓝光播放器</span>
+                            </div>
+                            <div class="monitor-center">
+                                <svg width="140" height="140" viewBox="0 0 140 140">
+                                    <circle cx="70" cy="70" r="54" stroke="rgba(255,255,255,0.1)" stroke-width="10" fill="none"/>
+                                    <circle cx="70" cy="70" r="54" stroke="var(--primary)" stroke-width="10" fill="none"
+                                    stroke-linecap="round" stroke-dasharray="339.3" stroke-dashoffset="95"
+                                    transform="rotate(-90 70 70)"/>
+                                    <text x="70" y="78" text-anchor="middle" fill="#fff" font-size="28" font-weight="700">74%</text>
+                                </svg>
+                            </div>
+                            <div class="monitor-right">
+                                <div class="param"><span>片源</span><span>23,450</span></div>
+                                <div class="param"><span>今日更新</span><span>128</span></div>
+                                <div class="param"><span>平均码率</span><span>45Mbps</span></div>
+                                <div class="param"><span>延迟</span><span>28ms</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- ==================== 核心优势 ==================== -->
+        <section class="advantage-section" id="section-advantage">
+            <div class="section-title">
+                <h2>为什么选择 <span class="highlight">蓝光电影网</span></h2>
+                <p>全方位优势，只为打造极致的在线观影体验</p>
+            </div>
+            <div class="adv-grid">
+                <div class="adv-card">
+                    <div class="adv-icon">
+                        <svg viewBox="0 0 24 24" stroke="var(--primary)"><rect x="2" y="4" width="20" height="14" rx="3"/><path d="M8 21h8M12 18v3"/></svg>
+                    </div>
+                    <h3>海量片库</h3>
+                    <p>覆盖全球超百万部影视佳作，满足多元观影需求</p>
+                </div>
+                <div class="adv-card">
+                    <div class="adv-icon">
+                        <svg viewBox="0 0 24 24" stroke="var(--primary)"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+                    </div>
+                    <h3>高清画质</h3>
+                    <p>原生蓝光4K画质，沉浸式视觉盛宴</p>
+                </div>
+                <div class="adv-card">
+                    <div class="adv-icon">
+                        <svg viewBox="0 0 24 24" stroke="var(--primary)"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    </div>
+                    <h3>极速播放</h3>
+                    <p>智能CDN加速，秒开不卡顿</p>
+                </div>
+                <div class="adv-card">
+                    <div class="adv-icon">
+                        <svg viewBox="0 0 24 24" stroke="var(--primary)"><path d="M21 16v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
+                    </div>
+                    <h3>智能推荐</h3>
+                    <p>个性化算法精准匹配你的观影口味</p>
+                </div>
+                <div class="adv-card">
+                    <div class="adv-icon">
+                        <svg viewBox="0 0 24 24" stroke="var(--primary)"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    </div>
+                    <h3>多端同步</h3>
+                    <p>手机、平板、电视全设备无缝衔接</p>
+                </div>
+                <div class="adv-card">
+                    <div class="adv-icon">
+                        <svg viewBox="0 0 24 24" stroke="var(--primary)"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <h3>每日更新</h3>
+                    <p>国内外新片热剧抢先上架，永不错过精彩</p>
+                </div>
+            </div>
+        </section>
+        <!-- ==================== 精选视频 ==================== -->
+        <section class="video-section" id="section-video">
+            <div class="section-title">
+                <h2>🔥 本周精选 <span class="highlight">高分佳作</span></h2>
+                <p>编辑精心挑选，每一帧都是视觉享受</p>
+            </div>
+            <div class="video-grid">
+                <!-- 视频卡片1 -->
+                <div class="video-card">
+                    <div class="video-thumbnail" style="background: linear-gradient(135deg, #1a1a3e, #2d2d6e);">
+                        <span class="video-tag"><i>◆</i> 科幻</span>
+                        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 3l14 9-14 9V3z"/></svg></div>
+                        <span class="video-duration">148分钟</span>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">《星际穿越》经典科幻重映</h3>
+                        <p class="video-desc">诺兰执导科幻神作，黑洞穿越的极致视觉体验。</p>
+                        <div class="video-meta">
+                            <span>▶ 1250万次播放</span>
+                            <span>👍 8.6万赞</span>
+                        </div>
+                        <div class="video-tags-row">
+                            <span class="tag-video">4K修复</span>
+                            <span class="tag">豆瓣TOP250</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 视频卡片2 -->
+                <div class="video-card">
+                    <div class="video-thumbnail" style="background: linear-gradient(135deg, #0a2e36, #124a52);">
+                        <span class="video-tag"><i>◆</i> 科幻</span>
+                        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 3l14 9-14 9V3z"/></svg></div>
+                        <span class="video-duration">173分钟</span>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">《流浪地球2》导演剪辑版</h3>
+                        <p class="video-desc">中国科幻史诗，太空电梯与行星发动机的壮丽奇观。</p>
+                        <div class="video-meta">
+                            <span>▶ 2300万次播放</span>
+                            <span>👍 15.2万赞</span>
+                        </div>
+                        <div class="video-tags-row">
+                            <span class="tag-video">导演剪辑</span>
+                            <span class="tag">国产之光</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 视频卡片3 -->
+                <div class="video-card">
+                    <div class="video-thumbnail" style="background: linear-gradient(135deg, #2a1a3e, #4a2a5e);">
+                        <span class="video-tag"><i>◆</i> 动画</span>
+                        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 3l14 9-14 9V3z"/></svg></div>
+                        <span class="video-duration">125分钟</span>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">《千与千寻》数字修复版</h3>
+                        <p class="video-desc">宫崎骏经典漫游幻境，光影修复焕然一新。</p>
+                        <div class="video-meta">
+                            <span>▶ 890万次播放</span>
+                            <span>👍 6.3万赞</span>
+                        </div>
+                        <div class="video-tags-row">
+                            <span class="tag-video">数字修复</span>
+                            <span class="tag">宫崎骏</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 视频卡片4 -->
+                <div class="video-card">
+                    <div class="video-thumbnail" style="background: linear-gradient(135deg, #1a1a2e, #3a1a2e);">
+                        <span class="video-tag"><i>◆</i> 动作</span>
+                        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 3l14 9-14 9V3z"/></svg></div>
+                        <span class="video-duration">141分钟</span>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">《速度与激情10》高清首发</h3>
+                        <p class="video-desc">街头飙车极致快感，家庭与荣耀的最终对决。</p>
+                        <div class="video-meta">
+                            <span>▶ 1780万次播放</span>
+                            <span>👍 9.8万赞</span>
+                        </div>
+                        <div class="video-tags-row">
+                            <span class="tag-video">首发</span>
+                            <span class="tag">动作大片</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 视频卡片5 -->
+                <div class="video-card">
+                    <div class="video-thumbnail" style="background: linear-gradient(135deg, #2b2b1a, #4a3a1a);">
+                        <span class="video-tag"><i>◆</i> 传记</span>
+                        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 3l14 9-14 9V3z"/></svg></div>
+                        <span class="video-duration">180分钟</span>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">《奥本海默》IMAX质感</h3>
+                        <p class="video-desc">原子弹之父的传奇人生，诺兰新作口碑炸裂。</p>
+                        <div class="video-meta">
+                            <span>▶ 3200万次播放</span>
+                            <span>👍 18.6万赞</span>
+                        </div>
+                        <div class="video-tags-row">
+                            <span class="tag-video">奥斯卡</span>
+                            <span class="tag">IMAX</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 视频卡片6 -->
+                <div class="video-card">
+                    <div class="video-thumbnail" style="background: linear-gradient(135deg, #1a2e2a, #2e4a3e);">
+                        <span class="video-tag"><i>◆</i> 动画</span>
+                        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 3l14 9-14 9V3z"/></svg></div>
+                        <span class="video-duration">168分钟</span>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">《长安三万里》追光动画</h3>
+                        <p class="video-desc">大唐诗人群像，国漫视觉美学巅峰之作。</p>
+                        <div class="video-meta">
+                            <span>▶ 1500万次播放</span>
+                            <span>👍 11.4万赞</span>
+                        </div>
+                        <div class="video-tags-row">
+                            <span class="tag-video">国漫</span>
+                            <span class="tag">高分</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- ==================== 相关资讯 ==================== -->
+        <section class="news-section" id="section-news">
+            <div class="section-title">
+                <h2>相关资讯</h2>
+                <p>紧跟行业动态，捕捉影视界最新风向</p>
+                <div class="divider"></div>
+            </div>
+            <div class="news-grid" id="newsGrid">
+                <!-- JS动态渲染日期，标题静态 -->
+                <div class="news-card">
+                    <div class="news-date" data-date="2026-02-18">2026-02-18</div>
+                    <h3 class="news-title">《流浪地球3》官宣定档2027年春节档</h3>
+                    <p class="news-excerpt">郭帆导演透露剧本已完成，新作将聚焦太阳氦闪危机后的地球文明重建。</p>
+                    <a href="#" class="news-link">查看详情 →</a>
+                </div>
+                <div class="news-card">
+                    <div class="news-date" data-date="2026-02-10">2026-02-10</div>
+                    <h3 class="news-title">4K修复版《泰坦尼克号》重映好评如潮</h3>
+                    <p class="news-excerpt">经典永流传，数字修复技术让海洋之心更加璀璨。</p>
+                    <a href="#" class="news-link">查看详情 →</a>
+                </div>
+                <div class="news-card">
+                    <div class="news-date" data-date="2026-02-02">2026-02-02</div>
+                    <h3 class="news-title">盘点2026年最期待的十部科幻巨制</h3>
+                    <p class="news-excerpt">从《阿凡达5》到《沙丘3》，新一年科幻片单来了。</p>
+                    <a href="#" class="news-link">查看详情 →</a>
+                </div>
+                <div class="news-card">
+                    <div class="news-date" data-date="2026-01-22">2026-01-22</div>
+                    <h3 class="news-title">《阿凡达4》后期制作完成 预计暑期上映</h3>
+                    <p class="news-excerpt">卡梅隆再次革新技术，传言将展示潘多拉星球的海洋世界。</p>
+                    <a href="#" class="news-link">查看详情 →</a>
+                </div>
+                <div class="news-card">
+                    <div class="news-date" data-date="2026-01-15">2026-01-15</div>
+                    <h3 class="news-title">中国电影博物馆举办蓝光经典影展</h3>
+                    <p class="news-excerpt">百部经典修复影片集中展映，影迷可近距离感受胶片魅力。</p>
+                    <a href="#" class="news-link">查看详情 →</a>
+                </div>
+                <div class="news-card">
+                    <div class="news-date" data-date="2026-01-05">2026-01-05</div>
+                    <h3 class="news-title">蓝光电影网独家引进多部获奖文艺片</h3>
+                    <p class="news-excerpt">包括《燃烧》、《钛》等戛纳获奖作品，现已上架。</p>
+                    <a href="#" class="news-link">查看详情 →</a>
+                </div>
+            </div>
+        </section>
+        <!-- ==================== 常见问题FAQ ==================== -->
+        <section class="faq-section" id="section-faq">
+            <div class="section-title">
+                <h2>常见问题</h2>
+                <p>关于影视内容的深度解答，帮你更懂作品幕后</p>
+            </div>
+            <div class="faq-list">
+                <!-- FAQ 1 -->
+                <div class="faq-item active">
+                    <div class="faq-question">
+                        <i class="fa-icon">◆</i>
+                        <h3>《卡萨布兰卡》里克为何最终送伊尔莎离开？</h3>
+                        <span class="faq-toggle-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <ul>
+                            <li>里克深知伊尔莎的丈夫维克托是反纳粹运动领袖，其事业关乎更多人的命运</li>
+                            <li>伊尔莎在波罗的海与巴黎时期的感情纠葛，里克选择成全她的道义与家庭</li>
+                            <li>里克在机场对伊尔莎说"我们永远拥有巴黎"，暗示他将这份记忆视为永恒</li>
+                            <li>影片以里克放下个人情感、走向抵抗运动作为人物弧光的高潮</li>
+                            <li>这一幕也被影史誉为"最伟大的牺牲与成全"，成为好莱坞经典叙事范本</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- FAQ 2 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fa-icon">◆</i>
+                        <h3>《2001太空漫游》中的黑色石碑究竟象征什么？</h3>
+                        <span class="faq-toggle-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <ul>
+                            <li>石碑代表着高等外星文明对人类的"播种与指引"</li>
+                            <li>它出现在人类进化的三个关键节点，分别对应工具、智慧与飞升</li>
+                            <li>库布里克刻意不给出解释，让石碑成为开放的神秘符号</li>
+                            <li>许多学者认为石碑象征理性、启蒙与科技革命的原动力</li>
+                            <li>黑色方碑方正极简的造型，隐喻人类认知边界之外的更高维度存在</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- FAQ 3 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fa-icon">◆</i>
+                        <h3>《教父》中马龙·白兰度有哪些经典的即兴表演？</h3>
+                        <span class="faq-toggle-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <ul>
+                            <li>白兰度在化妆时往嘴里塞棉花，塑造出"教父"标志性的腮帮</li>
+                            <li>他坚持使用沙哑含糊的嗓音，让角色更加威严而神秘</li>
+                            <li>花园里与孙女玩耍时抚摸橙子的动作是临场发挥，成为经典细节</li>
+                            <li>在门廊上抱起猫的场景中，那只猫是片场突然闯入的流浪猫</li>
+                            <li>他坚持不用台词背板，以眼神和停顿让每个镜头充满张力</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- FAQ 4 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fa-icon">◆</i>
+                        <h3>《千与千寻》中"无脸男"为什么一直变出金子？</h3>
+                        <span class="faq-toggle-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <ul>
+                            <li>无脸男是"孤独与渴望被认同"的隐喻，金子是他理解的社交货币</li>
+                            <li>在油屋，金钱能变出服务和尊重，这是他唯一学会的表达方式</li>
+                            <li>当他发现千寻不贪金钱，才逐渐暴露出被吞噬的自我</li>
+                            <li>宫崎骏借无脸男讽刺消费社会中用金钱包罗一切的麻木关系</li>
+                            <li>最终无脸男吐尽一切，回归原本的纯粹，暗示自我救赎的可能</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- FAQ 5 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fa-icon">◆</i>
+                        <h3>希斯·莱杰如何塑造《蝙蝠侠》中小丑这一角色？</h3>
+                        <span class="faq-toggle-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <ul>
+                            <li>莱杰在笔记本上写下大量小丑的"人格实验"，并对着镜子反复练习表情</li>
+                            <li>他故意与小丑一样涂着妆容入睡，让角色逐渐侵蚀自己的精神状态</li>
+                            <li>小丑的舔嘴唇动作来自他联想到的焦虑症患者行为，刻意让人不安</li>
+                            <li>在审讯室场景中他临场爆发了鼓掌声，诺兰选择保留这一完全即兴的表演</li>
+                            <li>莱杰认为小丑不是坏人，而是"混沌的代言人"，没有动机才是最深恐惧</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- FAQ 6 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fa-icon">◆</i>
+                        <h3>《流浪地球2》中的太空电梯设定有哪些科学依据？</h3>
+                        <span class="faq-toggle-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <ul>
+                            <li>太空电梯的概念源自航天学中的"天梯"理论，需要碳纳米管等超强材料</li>
+                            <li>影片中的轿厢采用电磁推进技术，依托导轨实现加速和减速</li>
+                            <li>科学家指出，在地球同步轨道建设锚点，借助自转保持缆绳张力是可行方向</li>
+                            <li>片中的太空电梯基地设定在非洲山区，接近赤道以获得最佳甩开角度</li>
+                            <li>虽然目前材料学尚无法支撑现实建造，但其工程逻辑大体符合物理常识</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- ==================== 评论留言 ==================== -->
+        <section class="comment-section" id="section-comment">
+            <div class="section-title">
+                <h2>影迷互动 · 评论留言</h2>
+                <p>来自蓝光电影网用户的真实声音</p>
+                <div class="divider"></div>
+            </div>
+            <div class="comment-wrapper">
+                <div class="comment-form-wrap">
+                    <input type="text" placeholder="你的昵称" maxlength="20">
+                    <textarea placeholder="写下你对本站剧集、功能的看法与建议..."></textarea>
+                    <button class="btn-submit">↑ 发布留言</button>
+                </div>
+                <div class="comment-list-wrap">
+                    <div class="comment-list" id="commentList">
+                        <!-- JS渲染 -->
+                    </div>
+                    <div class="comment-list-footer">
+                        <span>向下滑动查看更多留言</span>
+                        <span class="arrow-down">↓</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- ==================== 页脚 ==================== -->
+        <footer class="footer">
+            <p>© 2026 蓝光电影网 www.languangdy.com 版权所有</p>
+            <p class="disclaimer">免责声明：本站所有影视资源均来自互联网公开渠道，仅供学习交流使用，不承担任何因内容引起的法律责任。如侵犯您的权益，请联系我们删除。</p>
+        </footer>
+    </div><!-- end site-wrapper -->
+    <!-- ==================== 交互JS ==================== -->
+    <script>
+        /* ===== 导航栏菜单（移动端） ===== */
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+        menuToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('open');
+        });
+        /* ===== 导航链接点击关闭移动菜单 ===== */
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => navMenu.classList.remove('open'));
+        });
+        /* ===== 滚动进度条 ===== */
+        const scrollProgress = document.getElementById('scroll-progress');
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const progress = (scrollTop / docHeight) * 100;
+            scrollProgress.style.width = progress + '%';
+        });
+        /* ===== FAQ 手风琴交互 ===== */
+        document.querySelectorAll('.faq-item').forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', function() {
+                const isActive = item.classList.contains('active');
+                // 关闭所有
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                // 如果之前没有展开，则展开当前
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+        /* ===== 粒子背景 Canvas ===== */
+        (function() {
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            let width = (canvas.width = window.innerWidth);
+            let height = (canvas.height = window.innerHeight);
+            const particles = [];
+            const COUNT = Math.min(50, Math.floor(width / 25));
+            for (let i = 0; i < COUNT; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    r: Math.random() * 2.2 + 0.5,
+                    vx: (Math.random() - 0.5) * 0.25,
+                    vy: (Math.random() - 0.5) * 0.25,
+                    opacity: Math.random() * 0.4 + 0.1
+                });
+            }
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if (p.x < 0 || p.x > width) p.vx *= -1;
+                    if (p.y < 0 || p.y > height) p.vy *= -1;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(0, 180, 216, ' + p.opacity + ')';
+                    ctx.fill();
+                });
+                requestAnimationFrame(draw);
+            }
+            draw();
+            window.addEventListener('resize', function() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+        })();
+        /* ===== 评论数据生成 ===== */
+        (function() {
+            const list = document.getElementById('commentList');
+            // 模拟当前时间2026-03-01
+            const NOW = new Date('2026-03-01T15:00:00');
+            // 50条评论数据（昵称, 正文, 标签, 点赞, 回复）
+            const reviews = [
+                { n: '追剧小达人', t: '刚看完最新一集的到来，画质真的绝了！', tag: '热议', l: 152, r: 5 },
+                { n: '科幻迷の阿杰', t: '流浪地球2的导演剪辑版上线了，太空电梯那段太震撼，看得我起鸡皮疙瘩！', tag: '热门', l: 268, r: 12 },
+                { n: '老片收藏家', t: '千与千寻修复版每一帧都能当壁纸，宫崎骏的想象力永远不会过时。', tag: '好评', l: 98, r: 3 },
+                { n: '蓝光发烧友', t: '期待已久，终于有4K蓝光原盘片源了，家里音响终于派上用场。', tag: '观点', l: 324, r: 18 },
+                { n: '电影杂食者', t: '蓝光电影网的分类做得不错，文艺片和商业片分开能快速找到自己想看的。', tag: '理性', l: 76, r: 2 },
+                { n: '下班看片人', t: '建议增加"漫画"分区，有些经典动画电影没有归到动画番剧里。', tag: '讨论', l: 54, r: 6 },
+                { n: '影评人老王', t: '星际穿越重映版细节更多了，诺兰在IMAX源里塞了不少彩蛋，值得二刷。', tag: '精彩', l: 412, r: 23 },
+                { n: '追更每一天', t: '每天上来打卡，最新上线的美剧字幕同步得真快，翻译质量也不错。', tag: '好评', l: 88, r: 1 },
+                { n: '蓝光影迷会', t: '强烈建议加一个"蓝光原盘下载"的快捷入口，对于我这种强迫症真的很重要。', tag: '催更', l: 203, r: 9 },
+                { n: '周末观影指南', t: '奥本海默太顶了，诺兰真的把传记片拍出了惊悚感，音效顶级！', tag: '热议', l: 189, r: 7 },
+                { n: '画质控小鱼', t: '手机端看也支持HDR了？这次更新确实用心，观感完全不同！', tag: '观点', l: 67, r: 4 },
+                { n: '剧情考据党', t: '有没有人注意到《教父》里那只猫？据说是流浪猫，白兰度即兴抱起来的，经典！', tag: '讨论', l: 231, r: 16 },
+                { n: '躺平看剧人', t: '希望多引入一些日本动画电影，最近吉卜力修复版都看完了，不过瘾啊！', tag: '催更', l: 45, r: 2 },
+                { n: '阿伟已经死了', t: '《速度与激情10》的硬盘录制版出来了，但建议等4K蓝光，音质差距巨大。', tag: '理性', l: 112, r: 8 },
+                { n: '午夜场常客', t: '流浪地球2的导演剪辑版比院线版多了半小时，剧情逻辑顺了很多，好评！', tag: '热门', l: 356, r: 21 },
+                { n: '海贼迷妹', t: '什么时候能上《海贼王：红发歌姬》的4K版？歌太好听了！', tag: '催更', l: 93, r: 5 },
+                { n: '豆瓣分奴', t: '评分排序功能很好用，高分电影基本不踩雷，救了我的片荒。', tag: '好评', l: 140, r: 3 },
+                { n: '导演研究僧', t: '好奇《2001太空漫游》的黑石碑比例，有说是1:4:9，对应木星引力？求讨论。', tag: '讨论', l: 78, r: 11 },
+                { n: '电影考古员', t: '《卡萨布兰卡》修复版太感人了，黑白片的质感在蓝光下反而更有味道。', tag: '精彩', l: 210, r: 14 },
+                { n: '弹幕爱好者', t: '弹幕系统什么时候出啊？？看悬疑片没人一起吐槽好难受！', tag: '热议', l: 654, r: 32 },
+                { n: '小小路人甲', t: '第一次注册，送了一个月vip，活动力度还挺大，支持一下！', tag: '讨论', l: 34, r: 1 },
+                { n: '声学半吊子', t: '杜比全景声的片源越来越多了，家庭影院爽翻，感谢蓝光电影网！', tag: '好评', l: 187, r: 6 },
+                { n: '剧透死全家', t: '不要剧透《奥本海默》！！我是来看舒心建议推荐的好片子，被评论剧透了一脸。', tag: '热议', l: 222, r: 15 },
+                { n: '吃瓜不嫌事大', t: '听说《教父》当年选角争议很大，看到白兰度试镜花絮真的服了，太有魅力。', tag: '观点', l: 95, r: 7 },
+                { n: '夜风微凉', t: '连续看了三部电影，网站速度很稳，没有一次卡顿，点赞！', tag: '热门', l: 78, r: 2 },
+                { n: '迷影新生代', t: '1997年的《泰坦尼克号》4K修复效果超出预期，沉船场景反而更沉重了。', tag: '好评', l: 145, r: 9 },
+                { n: '周末干饭人', t: '求科普《阿凡达2》水下拍摄技术，绝对领域不够看啊。', tag: '精彩', l: 88, r: 4 },
+                { n: '九品芝麻官', t: '建议增加"全屏预览"功能，网页端看片还是有点小。', tag: '观点', l: 102, r: 5 },
+                { n: '高冷王富贵', t: '有《2001太空漫游》的完整幕后制作解析吗？想看那段猴子戏怎么拍的。', tag: '讨论', l: 54, r: 3 },
+                { n: '豆瓣十年用户', t: '片单推荐很精准，口味被拿捏了，基本每周都能找到喜欢的。', tag: '好评', l: 167, r: 8 },
+                { n: '非主流少年', t: '能不能上《银翼杀手2049》的IMAX版？在电视上看完全不够劲儿！', tag: '催更', l: 76, r: 2 },
+                { n: '楚门的世界', t: '居然有《楚门的世界》蓝光修复版！经典台词看一次哭一次。', tag: '热议', l: 199, r: 12 },
+                { n: '地铁老人看手机', t: '资讯区写《阿凡达4》后期完成，真的假的？卡梅隆跳票王的话不能信（手动狗头）', tag: '讨论', l: 83, r: 6 },
+                { n: '片荒救助会', t: '希望能加一个"相似影片"推荐，看完一部不知道下一部看什么。', tag: '理性', l: 61, r: 4 },
+                { n: '凌晨三点半', t: '字幕加载速度比以前快多了，多语言切换也顺手，点赞。', tag: '好评', l: 44, r: 1 },
+                { n: '忧郁的青蛙', t: '刚才看《千与千寻》截图分析，才发现无脸男面具上有个小缺口，细节控狂喜。', tag: '精彩', l: 128, r: 10 },
+                { n: '电竞肥宅', t: '所有电影都是蓝光原盘吗？有没有压缩版的，太大了存不了。', tag: '讨论', l: 92, r: 5 },
+                { n: '爱笑的柯基', t: '《长安三万里》居然有4K版？诗歌的画面太震撼了，国产动画真的崛起了。', tag: '热门', l: 275, r: 19 },
+                { n: '月亮不打烊', t: '为什么我的收藏夹不同步？手机和pad是分开的，希望修复。', tag: '观点', l: 58, r: 7 },
+                { n: '小城青年', t: '在乡镇用4G网络也能流畅播放，优化做得真不错。', tag: '好评', l: 86, r: 3 },
+                { n: '大漠孤烟直', t: '找了一圈终于有《教父》全家桶的蓝光原盘了，马龙·白兰度yyds！', tag: '热议', l: 143, r: 4 },
+                { n: '软饭硬吃', t: '评论区里关于《教父》的讨论让我涨知识，原来那只猫是流浪猫。', tag: '精彩', l: 67, r: 2 },
+                { n: '一口一个奥利奥', t: 'iOS端播放器手势不灵敏，快进总是跳太多，希望优化一下。', tag: '理性', l: 72, r: 4 },
+                { n: '数据恢复师', t: '登录状态一段时间后会自动掉线，重新登录又要找剧，有点烦。', tag: '观点', l: 55, r: 3 },
+                { n: '海布里之心', t: '网站界面很干净，没有弹窗，观影体验在同类站里算很好的。', tag: '好评', l: 98, r: 2 },
+                { n: '清风徐来', t: '刚刚看到《星际穿越》的4K版，一瞬间想再刷一遍，经典就是经典。', tag: '热门', l: 121, r: 6 },
+                { n: '旋转的陀螺', t: '希望能增加倍速播放的快捷键，键盘党的愿望。', tag: '讨论', l: 39, r: 1 },
+                { n: '深海の鲸', t: '第一次来，搜索功能很强大，哈苏和叶文洁都能搜到。', tag: '热议', l: 84, r: 2 },
+                { n: '森林里的鹿', t: '发现评论区还有隐藏标签玩法？有意思哈哈。', tag: '精彩', l: 53, r: 13 },
+                { n: '暴雨天在家', t: '资讯区更新得很快，刚刚看到的影展新闻，周末打算带老爸去。', tag: '讨论', l: 47, r: 2 }
+            ];
+            // 生成近30天随机时间
+            function randomDate(now) {
+                const dayOffset = Math.floor(Math.random() * 30); // 0-29
+                const hourOffset = Math.floor(Math.random() * 24);
+                const minuteOffset = Math.floor(Math.random() * 60);
+                const d = new Date(now);
+                d.setDate(d.getDate() - dayOffset);
+                d.setHours(d.getHours() - hourOffset, d.getMinutes() - minuteOffset, 0, 0);
+                return d;
+            }
+            // 为每条评论添加日期并排序（降序）
+            const reviewList = reviews.map((r, idx) => {
+                const date = randomDate(NOW);
+                return { ...r, date };
+            }).sort((a, b) => b.date - a.date);
+            // 渲染评论
+            let html = '';
+            reviewList.forEach(r => {
+                const avatarChar = r.n.charAt(0);
+                const timeStr = (r.date.getMonth() + 1).toString().padStart(2, '0') + '-' +
+                    r.date.getDate().toString().padStart(2, '0') + ' ' +
+                    r.date.getHours().toString().padStart(2, '0') + ':' +
+                    r.date.getMinutes().toString().padStart(2, '0');
+                html += `
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="comment-avatar">${avatarChar}</span>
+                        <span class="comment-user">${r.n}</span>
+                        <span class="comment-time">${timeStr}</span>
+                    </div>
+                    <div class="comment-tag-row">
+                        <span class="comment-tag">◆ ${r.tag}</span>
+                    </div>
+                    <p class="comment-text">${r.t}</p>
+                    <div class="comment-actions">
+                        <span>↺ 回复</span>
+                        <span>👍 ${r.l}</span>
+                        <span>💬 ${r.r}</span>
+                    </div>
+                </div>`;
+            });
+            list.innerHTML = html;
+        })();
+    </script>
+    <!-- ==================== 结构化数据 SEO JSON-LD ==================== -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@graph": [{
+                "@type": "FAQPage",
+                "mainEntity": [{
+                    "@type": "Question",
+                    "name": "《卡萨布兰卡》里克为何最终送伊尔莎离开？",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "里克深知伊尔莎的丈夫维克托是反纳粹运动领袖，其事业关乎更多人的命运；伊尔莎在波罗的海与巴黎时期的感情纠葛，里克选择成全她的道义与家庭；里克在机场对伊尔莎说'我们永远拥有巴黎'，暗示他将这份记忆视为永恒；影片以里克放下个人情感、走向抵抗运动作为人物弧光的高潮；这一幕也被影史誉为'最伟大的牺牲与成全'。"
+                    }
+                }, {
+                    "@type": "Question",
+                    "name": "《2001太空漫游》中的黑色石碑究竟象征什么？",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "石碑代表着高等外星文明对人类的'播种与指引'；它出现在人类进化的三个关键节点，分别对应工具、智慧与飞升；库布里克刻意不给出解释，让石碑成为开放的神秘符号；许多学者认为石碑象征理性、启蒙与科技革命的原动力；黑色方碑方正极简的造型，隐喻人类认知边界之外的更高维度存在。"
+                    }
+                }, {
+                    "@type": "Question",
+                    "name": "《教父》中马龙·白兰度有哪些经典的即兴表演？",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "白兰度在化妆时往嘴里塞棉花，塑造出'教父'标志性的腮帮；他坚持使用沙哑含糊的嗓音，让角色更加威严而神秘；花园里与孙女玩耍时抚摸橙子的动作是临场发挥；在门廊上抱起猫的场景中，那只猫是片场突然闯入的流浪猫；他坚持不用台词背板，以眼神和停顿让每个镜头充满张力。"
+                    }
+                }, {
+                    "@type": "Question",
+                    "name": "《千与千寻》中'无脸男'为什么一直变出金子？",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "无脸男是'孤独与渴望被认同'的隐喻，金子是他理解的社交货币；在油屋，金钱能变出服务和尊重，这是他唯一学会的表达方式；当他发现千寻不贪金钱，才逐渐暴露出被吞噬的自我；宫崎骏借无脸男讽刺消费社会中用金钱包罗一切的麻木关系；最终无脸男吐尽一切，回归原本的纯粹，暗示自我救赎的可能。"
+                    }
+                }, {
+                    "@type": "Question",
+                    "name": "希斯·莱杰如何塑造《蝙蝠侠》中小丑这一角色？",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "莱杰在笔记本上写下大量小丑的'人格实验'，并对着镜子反复练习表情；他故意与小丑一样涂着妆容入睡，让角色逐渐侵蚀自己的精神状态；小丑的舔嘴唇动作来自他联想到的焦虑症患者行为；在审讯室场景中他临场爆发了鼓掌声，诺兰选择保留这一完全即兴的表演；莱杰认为小丑不是坏人，而是'混沌的代言人'。"
+                    }
+                }, {
+                    "@type": "Question",
+                    "name": "《流浪地球2》中的太空电梯设定有哪些科学依据？",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "太空电梯的概念源自航天学中的'天梯'理论，需要碳纳米管等超强材料；影片中的轿厢采用电磁推进技术，依托导轨实现加速和减速；科学家指出，在地球同步轨道建设锚点，借助自转保持缆绳张力是可行方向；片中的太空电梯基地设定在非洲山区，接近赤道以获得最佳甩开角度；虽然目前材料学尚无法支撑现实建造，但其工程逻辑大体符合物理常识。"
+                    }
+                }]
+            }, {
+                "@type": "VideoObject",
+                "name": "蓝光电影网精选影视合集",
+                "description": "蓝光电影网精选高分影视作品，支持4K蓝光画质在线观看，包含科幻、动画、动作、传记等多类型内容。",
+                "thumbnailUrl": "https://www.languangdy.com/thumbnail/video-collection.jpg",
+                "uploadDate": "2026-02-20T09:00:00+08:00",
+                "author": {
+                    "@type": "Organization",
+                    "name": "蓝光电影网"
+                }
+            }, {
+                "@type": "Article",
+                "headline": "《流浪地球3》官宣定档2027年春节档",
+                "datePublished": "2026-02-18T10:00:00+08:00",
+                "image": "https://www.languangdy.com/news/wandering-earth3.jpg",
+                "author": {
+                    "@type": "Organization",
+                    "name": "蓝光电影网编辑部"
+                },
+                "publisher": {
+                    "@type": "Organization",
+                    "name": "蓝光电影网"
+                }
+            }]
+        }
+    </script>
+</body>
+</html>
